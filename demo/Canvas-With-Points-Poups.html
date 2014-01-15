@@ -15,9 +15,11 @@
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="../src/fullcanvas.js"></script>
     <script src="../data/cities.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 </head>
 <body>
 <div id="map"></div>
+<div id="popup" style="display: none; position: absolute; background-color: whitesmoke"></div>
 <script>
     var MyLayer = L.FullCanvas.extend({
         drawSource: function(point) {
@@ -34,9 +36,16 @@
             ctx.arc(point.x, point.y , 2, 0, 2 * Math.PI, true);
             ctx.fill();
         },
-        clickedPoints: function(points){
-            var text = "You clicked on the point Latitude["+ points[0].data.slat + "] Longitude["+ points[0].data.slon + "]";
-            alert(text);
+        clickedPoints: function(points, ev){
+            var text1 = "You clicked on the point Latitude["+ points[0].data.slat + "] Longitude["+ points[0].data.slon + "]";
+            var tooltip = $("#popup");
+            tooltip.text(text1)
+                    .css("left", ev.originalEvent.clientX + "px")
+                    .css("top", ev.originalEvent.clientY + "px")
+                    .css("display", "block");
+            setTimeout(function () {
+                tooltip.css("display", "none");
+            }, 1000);
         }
 
     });
