@@ -90,7 +90,7 @@ var MyLayer = L.FullCanvas.extend({
 
 # how to draw lines between points.
 
-Create instance of the plugin canvas layer and add it to the map example:
+Create instance of the plugin canvas layer and add points to the layer example:
 ```javascript
     points = [];
     //make points slat denotes the source latitude and slon denotes the source longitude 
