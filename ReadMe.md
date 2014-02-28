@@ -75,5 +75,36 @@ You can color/create your own points by overriding the drawSource function examp
 ```
 
 # How to show popup.
+You can color/create your own points by overriding the drawSource function example:
+```javascript
+var MyLayer = L.FullCanvas.extend({
+        //over riding the clickedPoints function
+        clickedPoints: function(points){
+            var text = "You clicked on the point Latitude["+ points[0].data.slat + "] Longitude["+ points[0].data.slon + "]";
+            //show your popup
+            alert(text);
+        }
+
+    });
+```
 
 # how to draw lines between points.
+
+Create instance of the plugin canvas layer and add it to the map example:
+```javascript
+    points = [];
+    //make points slat denotes the source latitude and slon denotes the source longitude 
+    //make points tlat denotes the target latitude and tlon denotes the target longitude 
+    points.push({"slat": -33.3042, "slon": 26.5328,"tlat": -10, "tlon": 15});
+    //make points slat denotes the source latitude and slon denotes the source longitude 
+    //make points tlat denotes the target latitude and tlon denotes the target longitude 
+    points.push({"slat": -25, "slon": 29, "tlat": -50, "tlon": 10});
+    //make a canvas layer
+    var layer = new MyLayer();
+    //set the data points to the layer
+    layer.setData(points);
+    //add canvas layer to the map
+    layer.addLayerTo(map);
+```
+
+
