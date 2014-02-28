@@ -1,7 +1,9 @@
 Leaflet.fullcanvas
 =====================
 
-Provides implementation of points using canvas.
+Provides implementation of points using canvas. 
+With canvas you can show more number of points than SVG.
+The plugin uses the quad tree algorithm to minimize/optimize the number of points to be drawn.
 
 *Requires Leaflet 0.7.0 or newer.*
 
