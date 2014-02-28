@@ -28,7 +28,7 @@
         var d = {"slat": _.random(-75, 75), "slon":_.random(-165, 165),"tlat": _.random(-75, 75), "tlon":_.random(-165, 165)};
         mapData.push(d);
     });
-    var layer = new L.FullCanvas({drawLine:true});
+    var layer = new L.FullCanvas();
     layer.setData(mapData);
     layer.addLayerTo(map);
 </script>
