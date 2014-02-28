@@ -28,13 +28,13 @@ Create your map example:
 Create instance of the plugin canvas layer and add it to the map example:
 ```javascript
     points = [];
-    //make points slat denotes latitude slon denotes longitude
+    //make points slat denotes the latitude and slon denotes the longitude
     points.push({"slat": -33.3042, "slon": 26.5328});
-    //make another point slat denotes latitude slon denotes longitude
+    //make another point slat denotes the latitude and slon denotes the longitude
     points.push({"slat": -25, "slon": 29});
     //make a canvas layer
     var layer = new MyLayer();
-    //add points to the layer
+    //set the data points to the layer
     layer.setData(points);
     //add canvas layer to the map
     layer.addLayerTo(map);
@@ -42,7 +42,37 @@ Create instance of the plugin canvas layer and add it to the map example:
 
 # How to add data.
 
-# How to color your own points.
+To add data live into the map:
+To the canvas layer created, you can add points
+
+```javascript
+    //add points to the layer...here slat denotes the latitude and slon denotes the longitude
+    layer.setData({"slat": -33.3042, "slon": 26.5328});
+```
+
+# How to color/create your own points.
+
+You can color/create your own points by overriding the drawSource function example:
+```javascript
+    var MyLayer = L.FullCanvas.extend({
+        //over riding the getsource function
+        drawSource: function(point) {
+            //get the context
+            var ctx = layer.getCanvas().getContext("2d");
+            ctx.globalCompositeOperation = "lighter";
+            //drawing the shape of the point
+            ctx.beginPath();
+            //adding gradient 
+            var grd = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, 10);
+            grd.addColorStop(0.200, 'rgba(255, 242, 0, 1)');
+            grd.addColorStop(0.370, 'rgba(255, 157, 0, 1)');
+            grd.addColorStop(0.5, 'rgba(255,255, 255, 1)');
+            ctx.fillStyle = grd;
+            ctx.arc(point.x, point.y , 2, 0, 2 * Math.PI, true);
+            ctx.fill();
+        }
+    });
+```
 
 # How to show popup.
 
