@@ -1,11 +1,13 @@
 if (typeof(L) !== 'undefined') {
     L.FullCanvas = L.Class.extend({
+        options: this.options || {},
         initialize: function () {
             this._myCanvas = document.createElement('canvas');
             this._myCanvas.style.position = 'absolute';
             this._myCanvas.style.top = 0;
             this._myCanvas.style.left = 0;
             this._myContext = this._myCanvas.getContext('2d');
+            this.options.filterPointsInBounds = true;   // filter points before drawing
         },
         setData: function(data){
             var me = this;
@@ -97,6 +99,7 @@ if (typeof(L) !== 'undefined') {
             // clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             var b = this._myMap.getBounds();
+            if (!this.options.filterPointsInBounds) b = new L.LatLngBounds([-90, -180], [90,180]);
             var points = this._myQuad.retrieveInBounds(this.boundsToQuery(b));
             points.forEach(function(point){
                 var d = point.data;
