@@ -113,6 +113,9 @@ if (typeof(L) !== 'undefined') {
                 }
             });
         },
+        redraw: function(){
+            this.drawCanvas();
+        },
         boundsToQuery: function(bounds) {
             return {
                 x: bounds.getSouthWest().lat,
