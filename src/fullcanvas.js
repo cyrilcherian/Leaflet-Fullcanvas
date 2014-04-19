@@ -103,6 +103,7 @@ if (typeof(L) !== 'undefined') {
             var points = this._myQuad.retrieveInBounds(this.boundsToQuery(b));
             points.forEach(function(point){
                 var d = point.data;
+                if (d.draw && !d.draw(d)) return;    // allows dynamic filtering of curves
                 var spoint = me._myMap.latLngToContainerPoint(new L.LatLng(d.slat, d.slon));
                 me.drawSource(spoint);
                 if (d.tlat && d.tlon){
