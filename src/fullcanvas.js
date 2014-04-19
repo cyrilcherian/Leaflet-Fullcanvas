@@ -108,7 +108,7 @@ if (typeof(L) !== 'undefined') {
                 if (d.tlat && d.tlon){
                     var tpoint = me._myMap.latLngToContainerPoint(new L.LatLng(d.tlat, d.tlon));
                     me.drawTarget(tpoint);
-                    me.drawCurve(spoint, tpoint);
+                    me.drawCurve(spoint, tpoint, d.strokeStyle, d.lineWidth);
                 }
             });
         },
@@ -135,9 +135,10 @@ if (typeof(L) !== 'undefined') {
             ctx.fill();
         },
 
-        drawCurve: function(startPoint,endPoint) {
+        drawCurve: function(startPoint,endPoint, strokeStyle, lineWidth) {
             var context = this.getCanvas().getContext("2d");
-            context.strokeStyle = "rgba(0,0,255, 1)";
+            context.strokeStyle = strokeStyle || "rgba(0,0,255, 1)";
+            context.lineWidth = lineWidth || 1;
             var x = (startPoint.x+endPoint.x)/2;
             var y = (startPoint.y+endPoint.y)/2;
             var le = (endPoint.y - endPoint.y)/(startPoint.x-endPoint.x);
