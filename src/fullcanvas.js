@@ -52,6 +52,10 @@ if (typeof(L) !== 'undefined') {
             map.addLayer(this);
             return this;
         },
+        addTo: function(map){
+            this.addLayerTo(map);
+            return this;
+        },
         getCanvas: function () {
             return this._myCanvas;
         },
