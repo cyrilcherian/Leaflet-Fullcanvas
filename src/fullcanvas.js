@@ -129,7 +129,7 @@ if (typeof(L) !== 'undefined') {
         },
 
         drawCurve: function(startPoint,endPoint) {
-            var context = layer.getCanvas().getContext("2d");
+            var context = this.getCanvas().getContext("2d");
             context.strokeStyle = "rgba(0,0,255, 1)";
             var x = (startPoint.x+endPoint.x)/2;
             var y = (startPoint.y+endPoint.y)/2;
