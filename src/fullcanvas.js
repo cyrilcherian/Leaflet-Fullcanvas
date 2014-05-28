@@ -1,11 +1,13 @@
 if (typeof(L) !== 'undefined') {
     L.FullCanvas = L.Class.extend({
+        options: this.options || {},
         initialize: function () {
             this._myCanvas = document.createElement('canvas');
             this._myCanvas.style.position = 'absolute';
             this._myCanvas.style.top = 0;
             this._myCanvas.style.left = 0;
             this._myContext = this._myCanvas.getContext('2d');
+            this.options.filterPointsInBounds = true;   // filter points before drawing
         },
         setData: function(data){
             var me = this;
@@ -44,12 +46,16 @@ if (typeof(L) !== 'undefined') {
             var bounds = L.latLngBounds(map.containerPointToLatLng(j.add(L.point(3,3))), map.containerPointToLatLng(j.subtract(L.point(3,3))))
             var points = this._myQuad.retrieveInBounds(this.boundsToQuery(bounds));
             if(points.length > 0)
-                this.clickedPoints(points, e);
+                this.clickedPoints(points);
         },
-        clickedPoints: function(points, ev){
+        clickedPoints: function(points){
         },
         addLayerTo: function (map) {
             map.addLayer(this);
+            return this;
+        },
+        addTo: function(map){
+            this.addLayerTo(map);
             return this;
         },
         getCanvas: function () {
@@ -93,17 +99,22 @@ if (typeof(L) !== 'undefined') {
             // clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             var b = this._myMap.getBounds();
+            if (!this.options.filterPointsInBounds) b = new L.LatLngBounds([-90, -180], [90,180]);
             var points = this._myQuad.retrieveInBounds(this.boundsToQuery(b));
             points.forEach(function(point){
                 var d = point.data;
+                if (d.draw && !d.draw(d)) return;    // allows dynamic filtering of curves
                 var spoint = me._myMap.latLngToContainerPoint(new L.LatLng(d.slat, d.slon));
                 me.drawSource(spoint);
                 if (d.tlat && d.tlon){
                     var tpoint = me._myMap.latLngToContainerPoint(new L.LatLng(d.tlat, d.tlon));
                     me.drawTarget(tpoint);
-                    me.drawCurve(spoint, tpoint);
+                    me.drawCurve(spoint, tpoint, d.style ? d.style(d) : null);
                 }
             });
+        },
+        redraw: function(){
+            this.drawCanvas();
         },
         boundsToQuery: function(bounds) {
             return {
@@ -127,10 +138,10 @@ if (typeof(L) !== 'undefined') {
             ctx.fillStyle = "rgba(0,255,0, 0.5)";
             ctx.fill();
         },
-
-        drawCurve: function(startPoint,endPoint) {
-            var context = layer.getCanvas().getContext("2d");
-            context.strokeStyle = "rgba(0,0,255, 1)";
+        drawCurve: function(startPoint,endPoint, style) {
+            var context = this.getCanvas().getContext("2d");
+            context.strokeStyle = (style && style.strokeStyle) ? style.strokeStyle : "rgba(0,0,255, 1)";
+            context.lineWidth = (style && style.lineWidth) ? style.lineWidth : 1;
             var x = (startPoint.x+endPoint.x)/2;
             var y = (startPoint.y+endPoint.y)/2;
             var le = (endPoint.y - endPoint.y)/(startPoint.x-endPoint.x);
