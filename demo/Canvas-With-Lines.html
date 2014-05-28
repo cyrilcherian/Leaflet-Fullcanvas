@@ -19,10 +19,11 @@
 <body>
 <div id="map"></div>
 <script>
-    var map = L.map('map').setView([0, 0], 2);
-    L.tileLayer('http://{s}.tile.cloudmade.com/7c2ed2e9170441289176d725eb0ca615/997/256/{z}/{x}/{y}.png', {
-        maxZoom: 18
-    }).addTo(map);
+    var map = L.map('map').setView([0, 35], 3);
+    var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{mapid}/{z}/{x}/{y}.png', {
+    mapid: 'cyrilcherian.ic2dlojn'
+    }).addTo(map);    
+
     var mapData = [];
     _.times(50, function() {
         var d = {"slat": _.random(-75, 75), "slon":_.random(-165, 165),"tlat": _.random(-75, 75), "tlon":_.random(-165, 165)};
