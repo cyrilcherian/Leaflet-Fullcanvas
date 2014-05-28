@@ -140,8 +140,8 @@ if (typeof(L) !== 'undefined') {
         },
         drawCurve: function(startPoint,endPoint, style) {
             var context = this.getCanvas().getContext("2d");
-            context.strokeStyle = style.strokeStyle || "rgba(0,0,255, 1)";
-            context.lineWidth = style.lineWidth || 1;
+            context.strokeStyle = (style && style.strokeStyle) ? style.strokeStyle : "rgba(0,0,255, 1)";
+            context.lineWidth = (style && style.lineWidth) ? style.lineWidth : 1;
             var x = (startPoint.x+endPoint.x)/2;
             var y = (startPoint.y+endPoint.y)/2;
             var le = (endPoint.y - endPoint.y)/(startPoint.x-endPoint.x);
