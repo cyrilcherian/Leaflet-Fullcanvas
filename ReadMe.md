@@ -49,7 +49,7 @@ To the canvas layer created, you can add points
 
 ```javascript
     //add points to the layer...here slat denotes the latitude and slon denotes the longitude
-    layer.setData({"slat": -33.3042, "slon": 26.5328});
+    layer.addData({"slat": -33.3042, "slon": 26.5328});
 ```
 
 # How to color/create your own points.
