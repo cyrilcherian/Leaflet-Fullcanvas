@@ -21,7 +21,7 @@
 <script>
     var MyLayer = L.FullCanvas.extend({
         drawSource: function(point) {
-            var ctx = layer.getCanvas().getContext("2d");
+            var ctx = this.getCanvas().getContext("2d");
             ctx.globalCompositeOperation = "lighter";
             ctx.beginPath();
             var grd = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, 10);
