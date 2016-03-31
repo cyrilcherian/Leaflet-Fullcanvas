@@ -60,6 +60,7 @@
         })
         .done(function( mapData ) {
             var points = [];
+            mapData = JSON.parse(mapData);
             _.each(mapData, function(point) {
                 var d = {
                   "slat": point[0],
