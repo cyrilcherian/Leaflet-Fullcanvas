@@ -46,9 +46,9 @@ if (typeof(L) !== 'undefined') {
             var bounds = L.latLngBounds(map.containerPointToLatLng(j.add(L.point(3,3))), map.containerPointToLatLng(j.subtract(L.point(3,3))))
             var points = this._myQuad.retrieveInBounds(this.boundsToQuery(bounds));
             if(points.length > 0)
-                this.clickedPoints(points);
+                this.clickedPoints(points, e);
         },
-        clickedPoints: function(points){
+        clickedPoints: function(points, e){
         },
         addLayerTo: function (map) {
             map.addLayer(this);
