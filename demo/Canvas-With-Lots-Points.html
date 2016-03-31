@@ -21,31 +21,31 @@
 <div id="map"></div>
 <div id="popup" style="display: none; position: absolute; background-color: whitesmoke"></div>
 <script>
+    var colours = ['red'];
+    var n = colours.length;
+    var r = 1;
+    var d = r * 2;
+
+    var off = document.createElement('canvas');
+    off.width = n * d;
+    off.height = d;
+    var ctx = off.getContext('2d');
+    for (var i = 0; i < n; ++i) {
+      ctx.fillStyle = colours[i];
+      ctx.beginPath();
+      ctx.arc(i * d + r, r, r, 0, 2 * Math.PI);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+
     var MyLayer = L.FullCanvas.extend({
-        drawSource: function(point) {
-            var ctx = this.getCanvas().getContext("2d");
-            ctx.globalCompositeOperation = "lighter";
-            ctx.beginPath();
-            var grd = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, 10);
-            grd.addColorStop(0.200, 'rgba(255, 242, 0, 1)');
-            grd.addColorStop(0.370, 'rgba(255, 157, 0, 1)');
-            grd.addColorStop(0.5, 'rgba(255,255, 255, 1)');
-            ctx.fillStyle = grd;
-            ctx.arc(point.x, point.y , 2, 0, 2 * Math.PI, true);
-            ctx.fill();
-        },
-        clickedPoints: function(points, ev){
-            var text1 = "You clicked on the point Latitude["+ points[0].data.slat + "] Longitude["+ points[0].data.slon + "]";
-            var tooltip = $("#popup");
-            tooltip.text(text1)
-                    .css("left", ev.originalEvent.clientX + "px")
-                    .css("top", ev.originalEvent.clientY + "px")
-                    .css("display", "block");
-            setTimeout(function () {
-                tooltip.css("display", "none");
-            }, 1000);
-        }
+      drawSource: function(point) {
+        var ctx = this.getCanvas().getContext("2d");
+        ctx.drawImage(off, 0 * d, 0, d, d, point.x - r, point.y - r, d, d);
+      }
     });
+
     var map = L.map('map');
     // Set up the OSM layer
     L.tileLayer(
@@ -58,8 +58,18 @@
         $.ajax({
           url: "https://gist.githubusercontent.com/cyrilcherian/4683572c3f20a52387378cef18cc61b2/raw/dae092dad85e425d3f27ee701161d061107c2c77/cities.json"
         })
-        .done(function( msg ) {
-            console.log(msg);
+        .done(function( mapData ) {
+            var points = [];
+            _.each(mapData, function(point) {
+                var d = {
+                  "slat": point[0],
+                  "slon": point[1]
+                };
+                points.push(d);
+            });
+            var layer = new MyLayer();
+            layer.setData(points);
+            layer.addLayerTo(map);
         });
     }
     map.on('load', function(e) {
