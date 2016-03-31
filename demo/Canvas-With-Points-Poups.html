@@ -23,7 +23,7 @@
 <script>
     var MyLayer = L.FullCanvas.extend({
         drawSource: function(point) {
-            var ctx = layer.getCanvas().getContext("2d");
+            var ctx = this.getCanvas().getContext("2d");
             ctx.globalCompositeOperation = "lighter";
             ctx.beginPath();
             var grd = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, 10);
@@ -49,21 +49,29 @@
         }
 
     });
-    var map = L.map('map').setView([0, 35], 3);
-    var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{mapid}/{z}/{x}/{y}.png', {
-    mapid: 'cyrilcherian.ic229ldj'
-    }).addTo(map);    
-
-    var mapData = cities;
-    var points = [];
-    _.each(mapData, function(point) {
-        var d = {"slat": point[0], "slon": point[1]};
-        points.push(d);
+    var map = L.map('map');
+    // Set up the OSM layer
+    L.tileLayer(
+      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 9,
+        minZoom: 3,
+      }).addTo(map);
+    
+    function search() {
+        var mapData = cities;
+        var points = [];
+        _.each(mapData, function(point) {
+            var d = {"slat": point[0], "slon": point[1]};
+            points.push(d);
+        });
+        var layer = new MyLayer();
+        layer.setData(points);
+        layer.addLayerTo(map);
+    }
+    map.on('load', function(e) {
+      search()
     });
-
-    var layer = new MyLayer();
-    layer.setData(points);
-    layer.addLayerTo(map);
+    map.setView([0, 0], 3);   
 </script>
 </body>
 </html>
