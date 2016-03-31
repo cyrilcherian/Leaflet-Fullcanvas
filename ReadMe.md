@@ -13,6 +13,8 @@ The plugin uses the quad tree algorithm to minimize/optimize the number of point
 * For canvas with lines connecting points: [Demo](http://cyrilcherian.github.io/Leaflet-Fullcanvas/demo/Canvas-With-Lines.html)
 * For canvas with points and popups: [Demo](http://cyrilcherian.github.io/Leaflet-Fullcanvas/demo/Canvas-With-Points-Poups.html)
 
+* For canvas with Looots of points(160236): [Demo](http://cyrilcherian.github.io/Leaflet-Fullcanvas/demo/Canvas-With-Lots-Points.html)
+
 
 ## Usage
 
