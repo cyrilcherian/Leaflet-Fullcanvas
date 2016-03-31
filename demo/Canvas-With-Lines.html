@@ -19,19 +19,28 @@
 <body>
 <div id="map"></div>
 <script>
-    var map = L.map('map').setView([0, 35], 3);
-    var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{mapid}/{z}/{x}/{y}.png', {
-    mapid: 'cyrilcherian.ic229ldj'
-    }).addTo(map);
+    var map = L.map('map');
+    // Set up the OSM layer
+    L.tileLayer(
+      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 9,
+        minZoom: 3,
+      }).addTo(map);
 
-    var mapData = [];
-    _.times(50, function() {
-        var d = {"slat": _.random(-75, 75), "slon":_.random(-165, 165),"tlat": _.random(-75, 75), "tlon":_.random(-165, 165)};
-        mapData.push(d);
+    function search() {
+        var mapData = [];
+        _.times(50, function() {
+            var d = {"slat": _.random(-75, 75), "slon":_.random(-165, 165),"tlat": _.random(-75, 75), "tlon":_.random(-165, 165)};
+            mapData.push(d);
+        });
+        var layer = new L.FullCanvas({drawLine:true});
+        layer.setData(mapData);
+        layer.addLayerTo(map);
+    }    
+    map.on('load', function(e) {
+      search()
     });
-    var layer = new L.FullCanvas();
-    layer.setData(mapData);
-    layer.addLayerTo(map);
+    map.setView([0, 0], 3)       
 </script>
 </body>
 </html>
