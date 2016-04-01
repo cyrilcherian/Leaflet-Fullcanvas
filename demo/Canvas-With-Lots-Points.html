@@ -23,22 +23,10 @@
     var colours = ['red'];
     var n = colours.length;
     var r = 1;
-    var d = 16;
+    var d = r*2;
     var imageObj = new Image();
     imageObj.src = "../data/shapes.png";
-    /*
-    var off = document.createElement('canvas');
-    off.width = n * d;
-    off.height = d;
-    var ctx = off.getContext('2d');
-    for (var i = 0; i < n; ++i) {
-      ctx.fillStyle = colours[i];
-      ctx.beginPath();
-      ctx.arc(i * d + r, r, r, 0, 2 * Math.PI);
-      ctx.closePath();
-      ctx.fill();
-    }
-    */
+   
 
     var MyLayer = L.FullCanvas.extend({
       drawSource: function(point) {
