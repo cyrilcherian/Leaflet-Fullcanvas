@@ -138,33 +138,13 @@ We should not do
 Because if we have a 100000+ points the context drawing is expensive for each point.
 So best approach is to insert an image point instead of drawing the points.
 ```javascript
-    var colours = ['red'];
-    var n = colours.length;
-    var r = 1;
-    var d = r * 2;
-    var dummyCanvas = document.createElement('canvas');//make a dummy canvas
-    dummyCanvas.width = n * d;
-    dummyCanvas.height = d;
-    var ctx = dummyCanvas.getContext('2d');
-    //make a point
-    for (var i = 0; i < n; ++i) {
-      ctx.fillStyle = colours[i];
-      ctx.beginPath();
-      ctx.arc(i * d + r, r, r, 0, 2 * Math.PI);
-      ctx.closePath();
-      ctx.fill();
-    }
-```
-Now when you draw just insert the image (or canvas) as shown below:
-
-```javascript
+    var imageObj = new Image();
+    imageObj.src = "../data/shapes.png";//load any image
+   //place the points in the canvas
     var MyLayer = L.FullCanvas.extend({
       drawSource: function(point) {
         var ctx = this.getCanvas().getContext("2d");
-        //here dummyCanvas is the dummy canvas where i have created a point
-        //now everytime I am cutting that point and pasting in the main canvas
-        //this way I am not drawing the points but just pasting an image in a given lat/lon 
-        ctx.drawImage(dummyCanvas, 0 * d, 0, d, d, point.x - r, point.y - r, d, d);
+        ctx.drawImage(imageObj, point.x - 1, point.y - 1, 2, 2);
       }
     });
 ```
