@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Full Canvas</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.ie.css" />
+    <![endif]-->
+    <style>
+        html, body, #map { height: 100%; padding: 0; margin: 0;}
+    </style>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="../src/fullcanvas.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<div id="popup" style="display: none; position: absolute; background-color: whitesmoke"></div>
+<script>
+    var colours = ['red'];
+    var n = colours.length;
+    var r = 1;
+    var d = r*2;
+    var imageObj = new Image();
+    imageObj.src = "../data/shapes.png";
+   
+
+    var MyLayer = L.FullCanvas.extend({
+      drawSource: function(point) {
+        var ctx = this.getCanvas().getContext("2d");
+        ctx.drawImage(imageObj, point.x - r, point.y - r, d, d);
+      }
+    });
+
+    var map = L.map('map');
+    // Set up the OSM layer
+    L.tileLayer(
+      'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 9,
+        minZoom: 3,
+      }).addTo(map);
+    
+    function search() {
+        $.ajax({
+          url: "https://gist.githubusercontent.com/cyrilcherian/4683572c3f20a52387378cef18cc61b2/raw/dae092dad85e425d3f27ee701161d061107c2c77/cities.json"
+        })
+        .done(function( mapData ) {
+            var points = [];
+            mapData = JSON.parse(mapData);
+            _.each(mapData, function(point) {
+                var d = {
+                  "slat": point[0],
+                  "slon": point[1]
+                };
+                points.push(d);
+            });
+            var layer = new MyLayer();
+            layer.setData(points);
+            layer.addLayerTo(map);
+        });
+    }
+    map.on('load', function(e) {
+      search()
+    });
+    map.setView([0, 0], 6);   
+</script>
+</body>
+</html>
