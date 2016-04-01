@@ -14,7 +14,6 @@
     <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
     <script src="http://underscorejs.org/underscore-min.js"></script>
     <script src="../src/fullcanvas.js"></script>
-    <script src="../data/cities.js"></script>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 </head>
 <body>
@@ -24,8 +23,10 @@
     var colours = ['red'];
     var n = colours.length;
     var r = 1;
-    var d = r * 2;
-
+    var d = 16;
+    var imageObj = new Image();
+    imageObj.src = "../data/shapes.png";
+    /*
     var off = document.createElement('canvas');
     off.width = n * d;
     off.height = d;
@@ -37,12 +38,12 @@
       ctx.closePath();
       ctx.fill();
     }
-
+    */
 
     var MyLayer = L.FullCanvas.extend({
       drawSource: function(point) {
         var ctx = this.getCanvas().getContext("2d");
-        ctx.drawImage(off, 0 * d, 0, d, d, point.x - r, point.y - r, d, d);
+        ctx.drawImage(imageObj, 0 * d, 0, d, d, point.x - r, point.y - r, d, d);
       }
     });
 
